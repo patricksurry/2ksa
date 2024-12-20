@@ -468,54 +468,60 @@ Symbol already defined.
 
 ### Sample Run
 
+<table><td>
+:information_source:  Note the initial <code>05B8 G</code>
+assumes you are launching the assembler from a monitor program.
+It can be omitted if you run <code>MAIN</code> directly from a simulator.
+</td></table>
+
 ```
-                05B8 G
-                ?       ?TABLE  WAVE    0C                      ①
-                ?TABLE
-                ?       ?ASSGN  PAD     1700                    ②
-                ? ASSGN         PERIOD  0060
-                ? ASSGN
-                ?       ?BEGIN  DELAY
-                - 0C00          LDX#    2F                      ③
-                1 0C00                  LDX#    2F
-                - 0C02                  DEX
-                - 0C03                  BPL     LOOP
-                - 0C05                  RTS
-                - 0C06  -ASSEM                                  ④
-                LOOP
-                - 0C06  -INSRT  02T003
-                - 0C02          LOOP    DEX
-                - 0C03  -ASSEM
-                - 0C06  -PRINT  00T006
-                A22F    DELAY   LDX#    2F      00              ⑤
-                CA      LOOP    DEX             02
-                10FD            BPL     LOOP    03
-                60              RTS             05
-                - 0C06  -STORE
-                ?       ?REDEF  0070                            ⑥
-                ?       ?BEGIN  WAVGEN
-                - 0C00  -LOCAL  BASE    0061                    ⑦
-                -LOCAL
-                - 0C00                  LDYZ    PERIOD
-                - 0C02          LOOP    LDAY    WAVE
-                - 0C05                  ADCIY   BASE
-                - 0C07                  STA     PAD     02
-                - 0C0A                  JSR     DELAY
-                - 0C0D                  DEY
-                - 0C0E                  BNE     LOOP
-                - 0C10                  RTS
-                - 0C11  -ASSEM
-                - 0C11  -PRINT  00TO11
-                A460    WAVGEN  LDYZ    PERIOD  00
-                B9800C  LOOP    LDAY    WAVE    02
-                7161            ADCIY   BASE    05
-                8D0217          STA     PAD 02  07
-                208C0C          JSR     DELAY   0A              ⑧
-                88              DEY             0D
-                D0F2            BNE     LOOP    0E
-                60              RTS             10
-                - 0C11  -STORE
-                ?
+                  05B8 G
+                  ?     ?TABLE  WAVE    0C                      ①
+                  ?TABLE
+                  ?     ?ASSGN  PAD     1700                    ②
+                  ? ASSGN       PERIOD  0060
+                  ? ASSGN
+                  ?     ?BEGIN  DELAY
+                  - 0C00        LDX#    2F                      ③
+                  1 0C00                LDX#    2F
+                  - 0C02                DEX
+                  - 0C03                BPL     LOOP
+                  - 0C05                RTS
+                  - 0C06-ASSEM                                  ④
+                  LOOP
+                  - 0C06-INSRT  02T003
+                  - 0C02        LOOP    DEX
+                  - 0C03-ASSEM
+                  - 0C06-PRINT  00TO06
+                  A22F  DELAY   LDX#    2F      00              ⑤
+                  CA    LOOP    DEX             02
+                  10FD          BPL     LOOP    03
+                  60            RTS             05
+                  - 0C06-STORE
+                  ?     ?REDEF  0070                            ⑥
+                  ?     ?BEGIN  WAVGEN
+                  - 0C00-LOCAL  BASE    0061                    ⑦
+                  -LOCAL
+                  - 0C00                LDYZ    PERIOD
+                  - 0C02        LOOP    LDAY    WAVE
+                  - 0C05                ADCIY   BASE
+                  - 0C07                STA     PAD     02
+                  - 0C0A                JSR     DELAY
+                  - 0C0D                DEY
+                  - 0C0E                BNE     LOOP
+                  - 0C10                RTS
+                  - 0C11-ASSEM
+                  - 0C11-PRINT  00TO11
+                  A460  WAVGEN  LDYZ    PERIOD  00
+                  B9800CLOOP    LDAY    WAVE    02
+                  7161          ADCIY   BASE    05
+                  8D0217        STA     PAD 02  07
+                  208C0C        JSR     DELAY   0A              ⑧
+                  88            DEY             0D
+                  D0F2          BNE     LOOP    0E
+                  60            RTS             10
+                  - 0C11-STORE
+                  ?
 ```
 
 ① The array `WAVE` occupies the first twelve bytes of the program
@@ -1115,10 +1121,14 @@ to label, if any.
 Process command, or translate input
 into source code.
 
+<table><td>
+:warning: <code>LDAZ PRMTAB</code> shown in the original should be <code>LDAZX ...</code>.
+</td></table>
+
 ```asm
                 CLD
                 LDX#    18              Initialize
-        INIT    LDAZ    PRMTAB          program parameters.
+        INIT    LDAZX   PRMTAB          program parameters.
                 STAZX   CRNTAH
                 DEX
                 BPL     INIT
@@ -1851,15 +1861,24 @@ RAM = *
 :information_source:  This is the decompiled symbol table:
 
 ```64tass
-        .text "?ASSGN", QASSGN
-        .text "?BEGIN", QBEGIN
-        .text "-LOCAL", XLOCAL
-        .text "?REDEF", QREDEF
-        .text "-ASSEM", XASSEM
-        .text "?TABLE", QTABLE
-        .text "-STORE", XSTORE
-        .text "-PRINT", XPRINT
-        .text "-INSRT", XINSRT
+        .text "?ASSGN"
+                .word QASSGN
+        .text "?BEGIN"
+                .word QBEGIN
+        .text "-LOCAL"
+                .word XLOCAL
+        .text "?REDEF"
+                .word QREDEF
+        .text "-ASSEM"
+                .word XASSEM
+        .text "?TABLE"
+                .word QTABLE
+        .text "-STORE"
+                .word XSTORE
+        .text "-PRINT"
+                .word XPRINT
+        .text "-INSRT"
+                .word XINSRT
 ```
 </td></table>
 
@@ -2220,25 +2239,33 @@ OUTSP   1E9E    Output one space.
 ```
 
 <table><td>
-:information_source:  This is a c65/py65mon I/O implementation:
+:information_source:  This is an I/O implementation for
+[c65](https://github.com/SamCoVT/TaliForth2/tree/master-64tass/c65)
+or [py65mon](https://github.com/mnaberez/py65):
 
 ```64tass
-        * = $3F00
-CRLF
-        lda #$0d
-        jsr OUTCH
-        lda #$0a
-        bne OUTCH
+        * = $0FE0               ; move higher to increase compilation space
 OUTSP
-        lda #$20
+        lda #$20                ; emit a space
+        bne OUTCH
+CRLF
+        lda #$0d                ; emit CR
+        jsr OUTCH
+        lda #$0a                ; emit LF
         bne OUTCH
 GETCH
-        lda $f004
-        cmp #$0a
-        bne OUTCH
-        lda #$0d
+        lda $f004               ; read a character from magic I/O location
+        cmp #'a'                ; upcase letters for convenience
+        bcc +
+        cmp #'z'+1
+        bcs +
+        and #$5f
++
+        cmp #$0a                ; is it LF? (which we get for 'enter')
+        bne OUTCH               ; either way we'll echo it
+        lda #$0d                ; 2ksa wants CR for end of line
 OUTCH
-        sta $f001
+        sta $f001               ; emit character via magic I/O location
         rts
 ```
 </td></table>

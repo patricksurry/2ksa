@@ -1,5 +1,8 @@
 all: 2ksa.bin
 
+clean:
+	rm -f 2ksa.asm 2ksa.bin 2ksa.lst 2ksa.sym
+
 2ksa.asm: 2ksa.md extract.py
 	python3 extract.py < $< > $@
 

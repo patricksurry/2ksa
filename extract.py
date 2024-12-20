@@ -114,6 +114,11 @@ literate = doc.split('## APPENDIX')[0]
 modules = re.findall(r'(?:```(?:asmx?|64tass)\n.*?```)|(?:####? [0-9A-F]{4}.*?\n)', literate, re.DOTALL)
 
 globals = set()
-print("* = $200")
-print('\n'.join(convert_module(m, globals) for m in modules))
-
+code = '\n'.join(convert_module(m, globals) for m in modules)
+print(f"""
+        .cpu "6502"
+        * = 0
+        .fill $200, $ee
+{code}
+        .align $1000, $ee
+""")
