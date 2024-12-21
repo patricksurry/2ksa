@@ -441,36 +441,28 @@ must be defined before the first line in which they are referenced.
 **Other restrictions.** Symbol table length is limited to 64
 symbols. No offset is permitted with two-byte instructions.
 
-TODO
+**Table 2.2**: <a name="table-2-2"></a> Error Codes
 
-**Table 2.2**: <a name="table-2-2></a> Error Codes
-
-Command does not exist.
-
-Module length exceeds 128 bytes.
-Number of symbols exceeds é,
-Symbol already defined.
-
-Command legal in edit mode only.
-
-Command does not exist.
-
-Mnemonic does not exist.
-
-Address mode does not exist.
-
-Illegal address mode for mnemonic.
-
-Operand undefined; must be on page zero.
-Operand not on page zero.
-
-Offset legal for three-byte instructions only.
-Relative branch illegal outside module.
-Absolute addressing illegal within module.
-Command legal in control mode only.
-Illegal line number.
-
-Symbol already defined.
+|       |       |
+| ----- | ----- |
+| **A** | Command does not exist. |
+| **B** | Module length exceeds 128 bytes. |
+| **C** | Number of symbols exceeds 64. |
+| **D** | Symbol already defined. |
+| **K** | Command legal in edit mode only. |
+|       |  |
+| **0** | Command does not exist. |
+| **1** | Mnemonic does not exist. |
+| **2** | Address mode does not exist. |
+| **3** | Illegal address mode for mnemonic. |
+| **4** | Operand undefined; must be on page zero. |
+| **5** | Operand not on page zero. |
+| **6** | Offset legal for three-byte instructions only. |
+| **7** | Relative branch illegal outside module. |
+| **8** | Absolute addressing illegal within module. |
+| **9** | Command legal in control mode only. |
+| **%** | Illegal line number. |
+| **:** | Symbol already defined. |
 
 ### Sample Run
 
@@ -1432,11 +1424,11 @@ Allocate space for tables.
 
 ### 075D Subroutine INPUT
 
-Prompts w/ first word in `IOBUF`.
-Input up to 5 words. Special keys: ESC, CR, BKSP, SP.
+Prompts with first word in `IOBUF`.
+Input up to 5 words. Special keys: <kbd>Escape</kbd>, <kbd>Enter</kbd>, <kbd>Backspace</kbd>, <kbd>Space</kbd>.
 
 <table><td>
-:information_source: Use ctrl-H for BKSP in the simulator.
+:information_source: Use <kbd>Ctrl</kbd>+H for BKSP in the simulator.
 </td></table>
 
 ```asm
@@ -2683,7 +2675,7 @@ monitor of your particular computer.
 To save:
 
 - Record pointer values below.
-- Dump 0A00 through 0C7F.
+- Dump `0A00` through `0C7F`.
 
 To retrieve:
 
@@ -2691,7 +2683,7 @@ To retrieve:
 - Hit reset.
 - Load module from tape.
 - Restore pointers.
-- Enter assembler from 05D6.
+- Enter assembler from `05D6`.
 - Ignore any error code.
 
 TODO 
