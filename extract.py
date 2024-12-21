@@ -120,5 +120,4 @@ print(f"""
         * = 0
         .fill $200, $ee
 {code}
-        .align $1000, $ee
 """)

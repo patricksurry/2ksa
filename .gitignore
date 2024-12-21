@@ -1,6 +1,8 @@
 .c65
+.DS_Store
 2ksa.asm
 2ksa.lst
 2ksa.sym
 c65.mem
+test.out
 ocr/

@@ -1,0 +1,45 @@
+?     ?TABLE  WAVE    0C
+?TABLE
+?     ?ASSGN  PAD     1700
+?ASSGN        PERIOD  0060
+?ASSGN
+?     ?BEGIN  DELAY
+- 0C00        LDX#    2F
+1 0C00                LDX#    2F
+- 0C02                DEX
+- 0C03                BPL     LOOP
+- 0C05                RTS
+- 0C06-ASSEM
+LOOP
+- 0C06-INSRT  02T003
+- 0C02        LOOP    DEX
+- 0C03-ASSEM
+- 0C06-PRINT  00TO06
+A22F   DELAY  LDX#   2F        00
+CA     LOOP   DEX              02
+10FD          BPL    LOOP      03
+60            RTS              05
+- 0C06-STORE
+?     ?REDEF  0070
+?     ?BEGIN  WAVGEN
+- 0C00-LOCAL  BASE    0061
+-LOCAL
+- 0C00                LDYZ    PERIOD
+- 0C02        LOOP    LDAY    WAVE
+- 0C05                ADCIY   BASE
+- 0C07                STA     PAD     02
+- 0C0A                JSR     DELAY
+- 0C0D                DEY
+- 0C0E                BNE     LOOP
+- 0C10                RTS
+- 0C11-ASSEM
+- 0C11-PRINT  00TO11
+A460   WAVGEN LDYZ   PERIOD    00
+B9800C LOOP   LDAY   WAVE      02
+7161          ADCIY  BASE      05
+8D0217        STA    PAD    02 07
+208C0C        JSR    DELAY     0A
+88            DEY              0D
+D0F2          BNE    LOOP      0E
+60            RTS              10
+- 0C11-STORE

@@ -56,7 +56,7 @@ available from Jameco Electronics.
 
 ### FIGURES
 
-- [A.1](#figure-a-1") Keyboard Interface
+- [A.1](#figure-a-1) Keyboard Interface
 
 ## INTRODUCTION
 
@@ -485,8 +485,8 @@ It can be omitted if you run <code>MAIN</code> directly from a simulator.
                   ?     ?TABLE  WAVE    0C                      ①
                   ?TABLE
                   ?     ?ASSGN  PAD     1700                    ②
-                  ? ASSGN       PERIOD  0060
-                  ? ASSGN
+                  ?ASSGN        PERIOD  0060
+                  ?ASSGN
                   ?     ?BEGIN  DELAY
                   - 0C00        LDX#    2F                      ③
                   1 0C00                LDX#    2F
@@ -499,10 +499,10 @@ It can be omitted if you run <code>MAIN</code> directly from a simulator.
                   - 0C02        LOOP    DEX
                   - 0C03-ASSEM
                   - 0C06-PRINT  00TO06
-                  A22F  DELAY   LDX#    2F      00              ⑤
-                  CA    LOOP    DEX             02
-                  10FD          BPL     LOOP    03
-                  60            RTS             05
+                  A22F   DELAY  LDX#   2F        00             ⑤
+                  CA     LOOP   DEX              02
+                  10FD          BPL    LOOP      03
+                  60            RTS              05
                   - 0C06-STORE
                   ?     ?REDEF  0070                            ⑥
                   ?     ?BEGIN  WAVGEN
@@ -518,14 +518,14 @@ It can be omitted if you run <code>MAIN</code> directly from a simulator.
                   - 0C10                RTS
                   - 0C11-ASSEM
                   - 0C11-PRINT  00TO11
-                  A460  WAVGEN  LDYZ    PERIOD  00
-                  B9800CLOOP    LDAY    WAVE    02
-                  7161          ADCIY   BASE    05
-                  8D0217        STA     PAD 02  07
-                  208C0C        JSR     DELAY   0A              ⑧
-                  88            DEY             0D
-                  D0F2          BNE     LOOP    0E
-                  60            RTS             10
+                  A460   WAVGEN LDYZ   PERIOD    00
+                  B9800C LOOP   LDAY   WAVE      02
+                  7161          ADCIY  BASE      05
+                  8D0217        STA    PAD    02 07
+                  208C0C        JSR    DELAY     0A             ⑧
+                  88            DEY              0D
+                  D0F2          BNE    LOOP      0E
+                  60            RTS              10
                   - 0C11-STORE
                   ?
 ```
@@ -2251,7 +2251,7 @@ gives a brief description of each of these routines, together
 with the addresses of lines in the assembler which call each
 subroutine.
 
-**Table 5.1**: <a href="table-5-1"></a>1/0 Routines
+**Table 5.1**: <a name="table-5-1"></a>1/0 Routines
 
 ```
 KIM Routine     Function                            Assembler references
@@ -2269,15 +2269,14 @@ OUTSP   1E9E    Output one space.                   078D (258D)
 and <a href="https://github.com/mnaberez/py65">py65mon</a> simulators.
 
 ```64tass
-        * = $0FDA               ; move higher to increase compilation space
-OUTSP
-        lda #$20                ; emit a space
-        bne OUTCH
+        * = $1E2F               
+;        * = $834D               ; Switch to SYM-1 address to match checksums
 CRLF
-        lda #$0d                ; emit CR
-        jsr OUTCH
         lda #$0a                ; emit LF
-        bne OUTCH
+        jmp OUTCH
+
+        * = $1E5A
+;        * = $8A1B               ; SYM-1
 GETCH
         lda $f004               ; read a character from magic I/O location
         cmp #'a'                ; upcase letters for convenience
@@ -2286,18 +2285,32 @@ GETCH
         bcs +
         and #$5f
 +
-        cmp #$0a                ; is it LF? (which we get for 'enter')
-        bne OUTCH               ; either way we'll echo it
+        cmp #$0a                ; is it LF? (which we see for 'enter')
+        beq +
+        jmp OUTCH               ; echo regular chars (2ksa generates newline)
++
         lda #$0d                ; 2ksa wants CR for end of line
+        rts
+
+        * = $1E9E
+;        * = $8342               ; SYM-1
+OUTSP
+        lda #$20                ; emit a space
+        jmp OUTCH
+
+        * = $1EA0
+;        * = $8A47               ; SYM-1
 OUTCH
         sta $f001               ; emit character via magic I/O location
         rts
+
+        .align $1000, 0
 ```
 </td></table>
 
 ![kbdif](images/2ksa_kbdif.jpg "Keyboard interface")
 
-**Figure A.1**: <a name="figure-A-1"></a> Keyboard Interface
+**Figure A.1**: <a name="figure-a-1"></a> Keyboard Interface
 
 ## APPENDIX A: AN INEXPENSIVE I/O SYSTEM
 
@@ -2690,4 +2703,31 @@ Permission is hereby granted to photocopy this page.
 
 TODO  - running two-digit checksum ok to 0750 when IO vectors differ
 
-(hex dump and checksum omitted; try `hexdump -C -s 512 -n 2048 2ksa.bin`)
+The full hex dump has been omitted but is easily reconstructed, e.g.:
+
+```
+$ hexdump -C -s 512 -n 2048 2ksa.bin
+
+00000200  42 52 4b 43 4c 43 43 4c  44 43 4c 49 43 4c 56 44  |BRKCLCCLDCLICLVD|
+00000210  45 58 44 45 59 49 4e 58  49 4e 59 4e 4f 50 50 48  |EXDEYINXINYNOPPH|
+...
+```
+
+The block and line checksums can be confirmed in python after rebuilding the image 
+using SYM I/O vector addresses:
+
+```
+data = open('2ksa.bin', 'rb').read()[0x200:0x0a00]
+for i in range(0, len(data), 16):
+    print(f"{i+0x200:04x} {sum(data[0:i+16])%256:02x}")
+
+0200 85         # matching line checksum "0200 ... 56 44,85  BRK..."
+0210 68
+...
+09e0 0a
+09f0 05
+
+print(f"{sum(data)%0x10000:04x}")
+
+0405            # matching "Begin session ... Block checksum: 0405"
+```

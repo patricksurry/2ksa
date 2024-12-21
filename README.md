@@ -6,9 +6,9 @@ and reconstructed the rest to produce the markdown document.
 
 Use `make` to compile a working binary image of the assembler.
 This uses `extract.py` to generate `2ksa.asm` which is assembled using `64tass`.
-The image is padded to 4K to simplify loading at `$0000`
-with the assembler itself occupying 2K from `$200-9ff` followed by nearly 2K
-of empty storage space and ending with a few bytes of I/O routines.
+The image is padded to 8K to simplify loading at `$0000`
+with the assembler itself occupying 2K from `$200-9ff` followed by 5K
+of empty storage space and ending with I/O routines matching the KIM entrypoints.
 
 You can run the binary with
 [c65](https://github.com/SamCoVT/TaliForth2/tree/master-64tass/c65)
