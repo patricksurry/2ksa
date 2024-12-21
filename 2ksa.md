@@ -17,6 +17,12 @@ such memory blocks can be added to the basic KIM-1 microcomputer
 to provide the 4K RAM required by this assembler. Parts are
 available from Jameco Electronics.
 
+<table><td>
+:information_source:  Several editor's notes have been added 
+for clarity.  These are not present in the original document. 
+They are displayed in an outlined box like this.
+</td></table>
+
 ## TABLE OF CONTENTS
 
 - [INTRODUCTION](#introduction)
@@ -578,8 +584,6 @@ Loops may contain loops and blocks.
 Since control returns to the calling block or loop, a subroutine
 may be considered as a nested block or loop.
 
-TODO - indentation
-
 **Format.** The structure of a module can be emphasized by
 indenting blocks and loops. This is illustrated throughout
 Section 3. Occasional `NOP` (`EA`) instructions were inserted to
@@ -587,6 +591,12 @@ delimit blocks and loops. Nested loops or blocks may require
 two or three `NOP`s in a row, but rarely will an assembly language
 program contain a four `EA` series.
 
+<table><td>
+:information_source: Indentation doesn't appear to be supported
+by 2KSA itself, but was used in some of the code fragments
+displayed in the the original document.  This version of the 
+literate code document doesn't include that indentation.
+</td></table>
 
 ## LISTING
 
@@ -1023,7 +1033,7 @@ check legality and find offset.
                 LDA#    38              "8" Absolute
                 RTS                     mode w/in block.
 
-        OK      LDAZ    OFFSET          TODO $1C
+        OK      LDAZ    OFFSET
                 LDX#    00
                 CMP#    20              "SP"
                 BEQ     STROFS
@@ -1955,41 +1965,21 @@ array of these parameters. These correspond to the symbols
 number of the record which matches the supplied string. The
 zero flag is cleared if no match is found.
 
-TODO
 
 **Table 4.1**: <a name="table-4-1"></a> Important Arrays and Pointers.
 
-Array Assembly Assembled Symbol
-language program table
-module
+| Array | Assembly language module | Assembled program | Symbol table
+| --- | --- | --- | --- |
+| Address range | `0C00-0C7F`<br>(`2A00-2A7F`) | `0C80-??`<br>(`2A80-??`) | `09B8-0BB7`<br>(`27B8-29B7`) |
+| Pointer | `CRNTAL,H`<br>`003E,003F` | `MDLADL,H`<br>`0040,0041` | `SYMTBL,H`<br>`0050,0051` |
+| Points to | current line | first line of module | latest symbol |
+| Initial value | `0C00`<br>(`2A00`) | `0C80`<br>(`2A80`) | `09F8`*<br>(`27F8`) |
+| Initialized from | `02E9`**<br>(`20E9`) | `02EA,B`**<br>(`20EA,B`) | `02FA,B`**<br>(`20FA,B`) |
 
-Address OCO0O-OC7F OC80- ?? 09B8--0BB7
-
-range (2A00-2A7F) (2A80- ?°) (27B8-29B7)
-
-Pointer CRNTAL ,H MDLADL ,H SYMTBL,H
-
-003E,003F 0040 ,0041 0050,0051
-
-Points to current first line latest
-
-line of module symbol
-
-Initial ocood 0c80 O9F8*
-
-value (2A00) (2A80 ) (27F8)
-
-Initialized 02E9** 02EA ,02EB O2FA,02FB
-
-from (20E9) (20EA , 20EB) (20FA, 20FB)
-
-2? Limited by available RAM.
-
-() Address for version beginning at 2000.
-
-* First part of symbol table reserved by assembler.
-** High order address; low order initialized to zero.
-
+&emsp;&emsp;?? Limited by available RAM.  
+&emsp;&emsp;( ) Address for version beginning at 2000.  
+&emsp;&emsp;* First part of symbol table reserved by assembler.  
+&emsp;&emsp;** High order address; low order initialized to zero.  
 
 **Table 4.2**: <a name="table-4-2"></a> Global Symbols on Page Zero
 
@@ -2040,15 +2030,16 @@ LAST1   005B    High order address; same as CRNTAH.
 ```
 
 <table><td>
-:information_source:  Missing definitions for OFFSET (above), SYMPTR and OPRDSP were added;
-the latter two overlap with PRNTOK and WRONG and seem to be written but not read?
+:information_source:  Missing definitions for <code>OFFSET</code> (above), 
+<code>SYMPTR</code> and <code>OPRDSP</code> were added;
+the latter two overlap with <code>PRNTOK</code> and <code>WRONG</code> respectively
+and seem to be written but not read?
 
 ```64tass
 SYMPTR = $38    ; overlaps with PRNTOK, written but not read?
 OPRDSP = $39    ; overlaps with WRONG, written but not read?
 ```
 </td></table>
-
 
 **Table 4.3**: <a name="table-4-3"></a> Other Global Symbols
 
@@ -2686,29 +2677,44 @@ To retrieve:
 - Enter assembler from `05D6`.
 - Ignore any error code.
 
-TODO 
-
-GLOBAL PRGLEN SYMTBL SYMNUM
-Module Name ‘ ID  003¢ 003D 0050,51 0056
+| &emsp;&emsp;&emsp;&emsp; Module Name &emsp;&emsp;&emsp;&emsp; |  &emsp; ID &emsp; | GLOBAL<br>`003C` | PRGLEN<br>`003D` | SYMTBL<br>`0050,51` | SYMNUM<br>`0056` |
+| ----------- | --- | --- | --- | --- | --- |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+ |  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
+|  &emsp;  |     |     |     |     |     |
 
 Permission is hereby granted to photocopy this page.
 
-TODO  - running two-digit checksum ok to 0750 when IO vectors differ
+### SYM-1 VERSION
 
-The full hex dump has been omitted but is easily reconstructed, e.g.:
+<table><td>
+:information_source: The full hex dump concluding the original document has been omitted but is easily reconstructed as shown. The block and line checksums can also be confirmed after rebuilding the image using SYM I/O vector addresses.
+</td></table>
 
 ```
+# Produce a hex dump
 $ hexdump -C -s 512 -n 2048 2ksa.bin
 
 00000200  42 52 4b 43 4c 43 43 4c  44 43 4c 49 43 4c 56 44  |BRKCLCCLDCLICLVD|
 00000210  45 58 44 45 59 49 4e 58  49 4e 59 4e 4f 50 50 48  |EXDEYINXINYNOPPH|
 ...
-```
 
-The block and line checksums can be confirmed in python after rebuilding the image 
-using SYM I/O vector addresses:
-
-```
+# Verify checksums.  First adjust I/O addresses for CRLF, OUTCH, GETCH and OUTSP 
+# to match SYM-1 which are used in the original dump.  
+$ python3
 data = open('2ksa.bin', 'rb').read()[0x200:0x0a00]
 for i in range(0, len(data), 16):
     print(f"{i+0x200:04x} {sum(data[0:i+16])%256:02x}")
