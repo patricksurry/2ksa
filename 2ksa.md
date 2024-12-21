@@ -1,15 +1,17 @@
+![cover](images/2ksa_cover.jpg "2KSA")
+
 # A 2K SYMBOLIC ASSEMBLER FOR THE 6502
 
-Copyright 1979
-by Robert Ford Denison
-RD5 Teeter Rd.
-Ithaca, NY 14850
+Copyright 1979  
+by Robert Ford Denison  
+RD5 Teeter Rd.  
+Ithaca, NY 14850  
 
 All rights reserved, including the right to reproduce the
 program or documentation in machine-readable form, including
 magnetic media and read-only-memory.
 
-Cover: Schematics for a 5V, 3A regulated power supply and a
+*Cover:* Schematics for a 5V, 3A regulated power supply and a
 1k x 8 read/write memory block. The power supply and three
 such memory blocks can be added to the basic KIM-1 microcomputer
 to provide the 4K RAM required by this assembler. Parts are
@@ -17,40 +19,44 @@ available from Jameco Electronics.
 
 ## TABLE OF CONTENTS
 
-- INTRODUCTION
-- USE OF THE ASSMEBLER
-  - Basic Concepts
-  - Control Mode
-  - Assembly Language Format
-  - Edit Mode Commands
-  - Programming Restrictions
-  - Sample Run
-  - Structured Programming
-- LISTING
-- THEORY OF OPERATIONS
-  - Encoding Scheme
-  - Useful Subroutines
-- MODIFICATION
-  - Changing Special Key Definitions
-  - Moving Tables
-  - Adding Custom Commands
-  - Relocation
-  - I/O Requirements
+- [INTRODUCTION](#introduction)
+- [USE OF THE ASSMEBLER](#use-of-the-assembler)
+  - [Basic Concepts](#basic-concepts)
+  - [Control Mode](#control-mode)
+  - [Assembly Language Format](#assembly-language-format)
+  - [Edit Mode Commands](#edit-mode-commands)
+  - [Programming Restrictions](#programming-restrictions)
+  - [Sample Run](#sample-run)
+  - [Structured Programming](#structured-programming)
+- [LISTING](#listing)
+- [THEORY OF OPERATIONS](#theory-of-operation)
+  - [Encoding Scheme](#encoding-scheme)
+  - [Useful Subroutines](#useful-subroutines)
+- [MODIFICATION](#modification)
+  - [Changing Special Key Definitions](#changing-special-key-definitions)
+  - [Moving Tables](#moving-tables)
+  - [Adding Custom Commands](#adding-custom-commands)
+  - [Relocation](#relocation)
+  - [I/O Requirements](#io-requirements)
 
-APPENDIX A: AN INEXPENSIVE I/O SYSTEM
-APPENDIX B: ANSWERS TO USER QUESTIONS
+- [APPENDIX A: AN INEXPENSIVE I/O SYSTEM](#appendix-a-an-inexpensive-io-system)
+- [APPENDIX B: ANSWERS TO USER QUESTIONS](#appendix-b-answers-to-user-questions)
 
+- [2K SYMBOLIC ASSEMBLER: REVISIONS](#2k-symbolic-assembler-revisions)
 
-TABLES
+### TABLES
 
-- Input Format for Commands and Instructions
-- Error Codes
-- Important Arrays and Pointers
-- Global Symbols on Page Zero
-- Other Global Symbols
-- Hierarchy of Modules
-- I/O Routines
+- [2.1](#table-2-1) Input Format for Commands and Instructions
+- [2.2](#table-2-2) Error Codes
+- [4.1](#table-4-1) Important Arrays and Pointers
+- [4.2](#table-4-2) Global Symbols on Page Zero
+- [4.3](#table-4-3) Other Global Symbols
+- [4.4](#table-4-4) Hierarchy of Modules
+- [5.1](#table-5-1) I/O Routines
 
+### FIGURES
+
+- [A.1](#figure-a-1") Keyboard Interface
 
 ## INTRODUCTION
 
@@ -159,7 +165,7 @@ in RAM under the control of the "module pointer." This pointer
 is initialized to `0C80` (`2A80`). It is then incremented automatically
 each time a module is stored, to prevent the module
 from being overwritten by the next module. More information on
-this and other pointers is given in Table 4.1.
+this and other pointers is given in [Table 4.1](#table-4-1).
 
 **Symbols.** A "symbol" is a name given to a specific address.
 It may refer to a variable, a table, a module, a line within a
@@ -213,7 +219,7 @@ a question mark, which is also a prompt symbol for the mode.
 
 Enter the command in the first field, followed by any
 additional information required in subsequent fields. The
-format for each command is given in Table 2.1 and illustrated
+format for each command is given in [Table 2.1](#table-2-1) and illustrated
 by example in Section 2.6.
 
 **Define global symbols.** The `?ASSGN` command is used to assign
@@ -257,7 +263,7 @@ the assembly language code for the line will be stored.
 
 To enter a line of assembly language, hit the space bar to
 skip over the first field. The contents of the other fields
-are summarized in Table 2.1 and further explained below.
+are summarized in [Table 2.1](#table-2-1) and further explained below.
 
 **Label.** Enter a symbol in the second field if the line will
 be referenced by a branch instruction elsewhere in the module.
@@ -283,7 +289,7 @@ a two-digit hexadecimal number in this field. Other address
 modes use a symbol as their operand.
 
 
-Table 2.1: Input Format for Commands and Instructions
+**Table 2.1**: <a name="table-2-1"></a> Input Format for Commands and Instructions
 
 |                               | Field 1  | Field 2    | Field 3  | Field 4  | Field 5  |
 | ----------------------------- | -------- | ---------- | -------- | -------- | -------- |
@@ -319,7 +325,7 @@ may not be used with two-byte instructions.
 
 Commands are used in edit mode to define local symbols and
 to assemble, list, edit, and save a module. Edit mode commands
-begin with a hyphen. Their format is given in Table 2.1 and
+begin with a hyphen. Their format is given in [Table 2.1](#table-2-1) and
 their use is illustrated in Section 2.6.
 
 **Define local symbols.** The `-LOCAL` command is identical to
@@ -344,7 +350,7 @@ to return to the system monitor. Check the module pointer at
 `0040,41` to get the start address of the module. The module may
 be tested using appropriate user or monitor routines. Then return
 to edit mode by entering the assembler at `05D6` (`23D6`).
-Correct any errors (using the -INSRT command) and reassemble.
+Correct any errors (using the `-INSRT` command) and reassemble.
 
 **Insert lines.** The `-INSRT` command can be used to insert,
 delete, or replace lines. To insert one or more lines, use
@@ -359,9 +365,9 @@ the specified range. Lines following the deletion are moved back
 to fill the resulting gap. New lines can then be inserted
 starting at the first line number.
 
-**Append new lines,** After inserting or deleting lines, the
+**Append new lines.** After inserting or deleting lines, the
 user may wish to add lines to the end of the module. To do
-this, type `-INSRT FF` (fast forward?). Ignore the resulting @
+this, type `-INSRT FF` (fast forward?). Ignore the resulting
 error code.
 
 **Save.** An assembled module is saved using the `-STORE` command.
@@ -403,7 +409,7 @@ to debug the module thoroughly and save the object code.
 The assembler is reasonably immune to user error, other than
 careless use of the `?REDEF` command. Each input line is checked
 for correctness; when an error is detected, the normal prompt
-symbol is replaced with an error code (Table 2.2). The restrictions
+symbol is replaced with an error code ([Table 2.2](#table-2-2)). The restrictions
 below are designed to eliminate errors at assembly time
 (other than undefined symbols) and to minimize debugging time.
 
@@ -437,7 +443,7 @@ symbols. No offset is permitted with two-byte instructions.
 
 TODO
 
-Table 2.2: Error Codes
+**Table 2.2**: <a name="table-2-2></a> Error Codes
 
 Command does not exist.
 
@@ -596,7 +602,7 @@ program contain a four `EA` series.
 
 ```asmx
 0200    42 52 4B 43 4C 43 43 4C 44 43 4C 49 43 4C 56 44
-0210    45 58 44 45 59 49 4E 58 49 4E 49 4E 4F 50 50 48
+0210    45 58 44 45 59 49 4E 58 49 4E 59 4E 4F 50 50 48
 0220    41 50 48 50 50 4C 41 50 4C 50 52 54 49 52 54 53
 0230    53 45 43 53 45 44 53 45 49 54 41 58 54 41 59 54
 0240    53 58 54 58 41 54 58 53 54 59 41 43 50 58 53 54
@@ -631,7 +637,7 @@ delimited by added vertical bars in the original data dump above.
 ```64tass
 MNETAB  ; Three-character ASCII mnemonics for instructions.
         .text "BRK", "CLC", "CLD", "CLI", "CLV", "DEX", "DEY", "INX"
-        .text "INI", "NOP", "PHA", "PHP", "PLA", "PLP", "RTI", "RTS"
+        .text "INY", "NOP", "PHA", "PHP", "PLA", "PLP", "RTI", "RTS"
         .text "SEC", "SED", "SEI", "TAX", "TAY", "TSX", "TXA", "TXS"
         .text "TYA", "CPX", "STX", "LDX", "CPY", "LDY", "STY", "ADC"
         .text "AND", "CMP", "EOR", "LDA", "ORA", "SBC", "STA", "ASL"
@@ -785,7 +791,7 @@ X, X+1.
 ### 040F Subroutine SYM
 
 Puts base address of symbol table
-entry X in MISCL, H.
+entry X in `MISCL`, `H`.
 
 ```asm
                 SEC                     Find difference
@@ -814,7 +820,7 @@ entry X in MISCL, H.
 ### 0434 Subroutine ADDRSS
 
 Puts address corresponding to
-symbol X in ADL, H.
+symbol X in `ADL`, `H`.
 
 ```asm
                 JSR     SYM             Get base address.
@@ -861,7 +867,7 @@ symbol in X.
 ### 0469 Subroutine NEWSYM
 
 Puts base address of symbol table
-record for symbol pointed to by A in MISCL, H and returns
+record for symbol pointed to by A in `MISCL`, `H` and returns
 symbol in X.  If new, adds to table and sets Z.
 
 ```asm
@@ -879,7 +885,7 @@ symbol in X.  If new, adds to table and sets Z.
 ### 047D Subroutine ENCODE (part 1)
 
 Put mnemonic code in
-MNE, address mode in X.
+`MNE`, address mode in X.
 
 ```asm
                 LDX#    42              Find mnemonic.
@@ -984,7 +990,7 @@ address modes.
 ```
 
 <table><td>
-:information_source:  `SYMPTR` seems to be unused, overlapping with PTROK = $38
+:information_source:  <code>SYMPTR</code> seems to be unused, overlapping with <code>PTROK = $38</code>
 </td></table>
 
 ### 0508 Subroutine ENCODE (part 4)
@@ -1268,10 +1274,10 @@ Redefine module start address.
 ### 0683 Subroutine ASMBL
 
 Translate line into machine code;
-store result at (OBJECT). Return length-1 in Y.
+store result at `(OBJECT)`. Return length-1 in Y.
 
 <table><td>
-:warning: The first instruction is LDY# not LDA# as shown in the original document.
+:warning: The first instruction is <code>LDY#</code> not <code>LDA#</code> as shown in the original document.
 </td></table>
 
 ```asm
@@ -1349,7 +1355,7 @@ Displays undefined local symbols.
 ### 06EB -ASSEM
 
 Assemble module; store result in RAM
-locations beginning at (MDLADL, H).
+locations beginning at `(MDLADL, H)`.
 
 ```asm
                 JSR     LOCSYM          Check for local
@@ -1426,8 +1432,12 @@ Allocate space for tables.
 
 ### 075D Subroutine INPUT
 
-Prompts w/ first word in IOBUF.
+Prompts w/ first word in `IOBUF`.
 Input up to 5 words. Special keys: ESC, CR, BKSP, SP.
+
+<table><td>
+:information_source: Use ctrl-H for BKSP in the simulator.
+</td></table>
 
 ```asm
                 JSR     CRLF            New line.
@@ -1476,7 +1486,7 @@ Input up to 5 words. Special keys: ESC, CR, BKSP, SP.
 ### 07A6 -STORE
 
 Clear local symbols; assign address to module.
-Increment MDLADL,H to prevent overwrite by next module.
+Increment `MDLADL`,`H` to prevent overwrite by next module.
 Return to command mode.
 
 ```asm
@@ -1512,8 +1522,8 @@ Lower opcode pointer limits for modes.
 
 ### 07D9 Subroutine DECODE
 
-Decode line pointed to by CRNTAL
-and OBJECT. Put line in IOBUF, length in BYTES.
+Decode line pointed to by `CRNTAL`
+and `OBJECT`. Put line in `IOBUF`, length in `BYTES`.
 
 ```asm
                 LDA#    01              Assume 1 byte.
@@ -1638,7 +1648,7 @@ offset, if any.
 
 ### 08A1 Subroutine OUTLIN
 
-Output line from IOBUF.
+Output line from `IOBUF`.
 
 ```asm
                 JSR     CRLF            New line.
@@ -1653,8 +1663,8 @@ Output line from IOBUF.
 
 ### 08B1 Subroutine PRNTCK
 
-Check that FIRST and LAST are legal
-line numbers. Print lines in range if PRNTOK=1.
+Check that `FIRST` and `LAST` are legal
+line numbers. Print lines in range if `PRNTOK`=1.
 
 ```asm
                 LDA#    00              Initialize.
@@ -1705,7 +1715,9 @@ line numbers. Print lines in range if PRNTOK=1.
                 RTS
 ```
 
-### 090D -PRINT. Output lines in specified range.
+### 090D -PRINT.
+
+Output lines in specified range.
 
 ```asm
                 LDA#    01              Set print flag.
@@ -1717,8 +1729,8 @@ line numbers. Print lines in range if PRNTOK=1.
 
 ### 0917 Subroutine FIXSYM
 
-Adds BYTES to addresses of line
-labels. Used by -INSRT and subroutine INSERT.
+Adds `BYTES` to addresses of line
+labels. Used by `-INSRT` and subroutine `INSERT`.
 
 ```asm
                 LDXZ    SYMNUM          For local symbols,
@@ -1821,7 +1833,7 @@ Set program pointer to first line number; delete to second.
                 RTS                     edit mode.
 ```
 
-### O9AA
+### O9AA RMAIN
 
 Move first nine entries in symbol table to RAM.
 Entry point for assembler in ROM.
@@ -1840,8 +1852,8 @@ Entry point for assembler in ROM.
 First nine entries in symbol table; commands.
 
 <table><td>
-:information_source:  These are optionally relocated from ROM to RAM
-but here we just equate them:
+:information_source:  Symbols are optionally relocated from ROM to RAM
+via `RMAIN` but here we just equate them since we're running in RAM.
 
 ```64tass
 ROM = *
@@ -1858,27 +1870,37 @@ RAM = *
 ```
 
 <table><td>
-:information_source:  This is the decompiled symbol table:
+:information_source:  This is the decompiled symbol table.
+Note that we map the "?" and "-" prefixes to <code>CONTROL_</code>
+and <code>EDIT_</code> respectively to generate legal symbols for modern assembly.
 
 ```64tass
         .text "?ASSGN"
-                .word QASSGN
+        .word CONTROL_ASSGN
+
         .text "?BEGIN"
-                .word QBEGIN
+        .word CONTROL_BEGIN
+
         .text "-LOCAL"
-                .word XLOCAL
+        .word EDIT_LOCAL
+
         .text "?REDEF"
-                .word QREDEF
+        .word CONTROL_REDEF
+
         .text "-ASSEM"
-                .word XASSEM
+        .word EDIT_ASSEM
+
         .text "?TABLE"
-                .word QTABLE
+        .word CONTROL_TABLE
+
         .text "-STORE"
-                .word XSTORE
+        .word EDIT_STORE
+
         .text "-PRINT"
-                .word XPRINT
+        .word EDIT_PRINT
+
         .text "-INSRT"
-                .word XINSRT
+        .word EDIT_INSRT
 ```
 </td></table>
 
@@ -1937,13 +1959,13 @@ contain additional information), and the number of the last
 record in the table. This information is passed in the form
 of a single byte in the X register, which points to a page-zero
 array of these parameters. These correspond to the symbols
-`TBL` through `NUM` in Table 4.2. X is also used to return the
+`TBL` through `NUM` in [Table 4.2](#table-4-2). X is also used to return the
 number of the record which matches the supplied string. The
 zero flag is cleared if no match is found.
 
 TODO
 
-Table 4.1: Important Arrays and Pointers.
+**Table 4.1**: <a name="table-4-1"></a> Important Arrays and Pointers.
 
 Array Assembly Assembled Symbol
 language program table
@@ -1977,7 +1999,7 @@ from (20E9) (20EA , 20EB) (20FA, 20FB)
 ** High order address; low order initialized to zero.
 
 
-Table 4.2: Global Symbols on Page Zero
+**Table 4.2**: <a name="table-4-2"></a> Global Symbols on Page Zero
 
 ```asm
 IOBUF   0000    I/O buffer; prompt or command field.
@@ -2026,7 +2048,7 @@ LAST1   005B    High order address; same as CRNTAH.
 ```
 
 <table><td>
-:information_source:  missing definitions for OFFSET (above), SYMPTR and OPRDSP were added;
+:information_source:  Missing definitions for OFFSET (above), SYMPTR and OPRDSP were added;
 the latter two overlap with PRNTOK and WRONG and seem to be written but not read?
 
 ```64tass
@@ -2036,7 +2058,7 @@ OPRDSP = $39    ; overlaps with WRONG, written but not read?
 </td></table>
 
 
-Table 4.3: Other Global Symbols
+**Table 4.3**: <a name="table-4-3"></a> Other Global Symbols
 
 [//]: # (These symbols are already defined above so exclude from extracted assembly source)
 ```
@@ -2084,7 +2106,7 @@ Table 4.3: Other Global Symbols
 ```
 
 
-Table 4.4: Hierarchy of Modules.
+**Table 4.4**: <a name="table-4-4"></a> Hierarchy of Modules.
 
 ```
 MAIN PROGRAM                    ?BEGIN                          -STORE
@@ -2152,7 +2174,7 @@ language, or symbols at a different location.
 
 **Initialization value.** The location of each array is determined
 by the initial value of its corresponding pointer. The
-last line in Table 4.1 gives the source of this initialization
+last line in [Table 4.1](#table-4-1) gives the source of this initialization
 value for each array. By changing these values, the array(s)
 can be initialized to a different location. The current line
 pointer low order address is always initialized to zero; only
@@ -2220,31 +2242,34 @@ table contains six ASCII characters, corresponding to a command,
 followed by the low and high order address for the command
 subroutines. The high addresses, at `09BF` to `09FF` must be corrected.
 
-### I/0 Requirements
+### I/O Requirements
 
 The assembler uses standard I/O routines in the KIM monitor.
 Functionally equivalent user routines may be substituted
-for use with another I/0 device or 6502 system. Table 5.1
+for use with another I/O device or 6502 system. [Table 5.1](#table-5-1)
 gives a brief description of each of these routines, together
 with the addresses of lines in the assembler which call each
 subroutine.
 
-KIM Routine
+**Table 5.1**: <a href="table-5-1"></a>1/0 Routines
 
+```
+KIM Routine     Function                            Assembler references
+```
 ```asmx
-CRLF    1E2F    Carriage return, line feed
-OUTCH   1EA0    Output ASCII from A, preserve X.
-GETCH   1E5A    Input ASCII to A, preserve X.
-OUTSP   1E9E    Output one space.
+CRLF    1E2F    Carriage return, line feed          075D, 08A1 (255D, 26A1)
+OUTCH   1EA0    Output ASCII from A, preserve X.    0764, 08A8 (2564, 26A8)
+GETCH   1E5A    Input ASCII to A, preserve X.       0772 (2572)
+OUTSP   1E9E    Output one space.                   078D (258D)
 ```
 
 <table><td>
-:information_source:  This is an I/O implementation for
-[c65](https://github.com/SamCoVT/TaliForth2/tree/master-64tass/c65)
-or [py65mon](https://github.com/mnaberez/py65):
+:information_source:  This is an I/O implementation for the
+<a href="https://github.com/SamCoVT/TaliForth2/tree/master-64tass/c65">c65</a>
+and <a href="https://github.com/mnaberez/py65">py65mon</a> simulators.
 
 ```64tass
-        * = $0FE0               ; move higher to increase compilation space
+        * = $0FDA               ; move higher to increase compilation space
 OUTSP
         lda #$20                ; emit a space
         bne OUTCH
@@ -2270,46 +2295,9 @@ OUTCH
 ```
 </td></table>
 
-Table 5.1: 1/0 Routines
+![kbdif](images/2ksa_kbdif.jpg "Keyboard interface")
 
-TODO
-
-Figure A.1:
-
-
-
-+5V
-
-10K&
-
-48
-
-Assembler References
-
-075D (255D)
-O8A1 (26A1)
-
-0764 (2564)
-O8A8 (26A8)
-
-0772 (2572)
-
-078D (258D)
-
-ABC 1/0 INH
-4051
-01234567
-
-63-key
-unencoded
-keyboard
-
-8x8 matrix
-00=short
-3F=shift
-
-Keyboard Interface
-
+**Figure A.1**: <a name="figure-A-1"></a> Keyboard Interface
 
 ## APPENDIX A: AN INEXPENSIVE I/O SYSTEM
 
@@ -2330,51 +2318,50 @@ over no ASCII output at all. The keyboard interface might
 also be of interest to those planning to add one of Lancaster's
 "cheap video" displays.
 
-**Keyboard interface.** Figure A.1 is a schematic for the keyboard
+**Keyboard interface.** [Figure A.1](#figure-a-1) is a schematic for the keyboard
 interface. The unencoded keyboard must be wired as a
 matrix of eight rows and eight columns. One CMOS 4051 is used
 as a multiplexer and the other as a demultiplexer. Output lines
-PAO to PA5 select the row and column of interest. PA? goes low
+PA0 to PA5 select the row and column of interest. PA7 goes low
 if the corresponding key is depressed.
 
 The "shift" key must be connected to channel 7 of each 4051.
-Channel 0 of one 4051 must be shorted to channel O of the other.
+Channel 0 of one 4051 must be shorted to channel 0 of the other.
 Other row and column assignments are arbitrary, since assignment
 of ASCII codes is done in software.
 
 The keyboard, 4051 chips, and wire-wrap sockets are available
 from Jameco Electronics, 1021 Howard Ave., San Carlos, CA
-375° for under $35. They also sell a wire-wrapping kit for
+94070 for under $35. They also sell a wire-wrapping kit for
 $13.
 
 **Testing the interface.** Load and run the relocatable test
 routine below. With no key depressed, the data display should
-read 00. Pressing the “shift" key should cause 3F to be displayed.
+read `00`. Pressing the “shift" key should cause `3F` to be displayed.
 If not, the keyboard interface is connected incorrectly.
 When another key is pressed, the hexadecimal code for its row
 and column will be displayed. Record this key number for each
 key. Then make a table giving the ASCII equivalent for each key
-number from 00 to 3F. Key numbers 00 and 3F correspond to "end
+number from `00` to `3F`. Key numbers `00` and `3F` correspond to "end
 of scan" and "shift," respectively, so the value entered for
 them will be ignored. This 64 byte table should be loaded at
-address OF80. There may be more than one key for a given ASCII
+address `0F80`. There may be more than one key for a given ASCII
 code, and not all ASCII codes will be used.
 
 **I/O routines.** Next, load the rest of the I/O software,
-beginning with Table SEGTAB and ending with Subroutine CRLF.
-SEGTAB gives the pattern of lit segments to display a 64 character
-ASCII subset (ASCII 20 through 5F) on the KIM-1 display.
-
+beginning with Table `SEGTAB` and ending with Subroutine `CRLF`.
+`SEGTAB` gives the pattern of lit segments to display a 64 character
+ASCII subset (ASCII `20` through `5F`) on the KIM-1 display.
 
 Some characters will look strange at first, but recognition
 becomes easy with very little practice. The subroutines
-GETCH, OUTCH, OUTSP, and CRLF are functionally equivalent to
+`GETCH`, `OUTCH`, `OUTSP`, and `CRLF` are functionally equivalent to
 the KIM monitor routines of the same names. Their addresses
-must be substituted in the assembler I/0 subroutine calls as
+must be substituted in the assembler I/O subroutine calls as
 explained in Section 5.5. These routines could also be used
 in other terminal-based programs.
 
-Listing A. Test program for Qwerty keyboard. Displays
+**Listing A**. Test program for Qwerty keyboard. Displays
 hexadecimal code of active key.
 
 ```asmx
@@ -2411,395 +2398,161 @@ Modify as desired.
 
 Display 6 characters on KIM readout for about 3 msec.
 
-
-LDA#
-STA
-LDA#
-STA
-LDX#
-DEC
-DEC
-LDAZX
-STA
-LDY#
-DEY
-BPL
-LDA#
-STA
-DEX
-BPL
-RTS
-
-D
-
-51
-
-Seven~segment code to display
-
-Modify as desired.
-
-OF 21 18
-6F 41 45
-04 1E 70
-6E 49 39
-
-isplay 6
-
-TF
-
-PCDD
-
-15
-
-PDD
-
-05
-PDD
-PDD
-DSPBUF
-PCD
-64
-
-WAIT
-00
-PCD
-
-CHAR
-
-Oc 40 08 52
-60 48 42 53
-38 37 54 5€
-44 OF 77 61
-
-characters on KIM
-
-Define 1/0.
-Initialize char.
-
-Display 6 chars.
-Select next char.
-
-Get segment code.
-Turn segments on.
-Wait 500 msec.
-
-Turn segments off.
-
-Another char?
-55
+```asmx
+                LDA#    7F              Define I/O.
+                STA     PCDD
+                LDA#    15              Initialize char.
+                STA     PDD
+                LDX#    05              Display 6 chars.
+        CHAR    DEC     PDD             Select next char.
+                DEC     PDD
+                LDAZX   DSPBUF          Get segment code.
+                STA     PCD             Turn segments on.
+                LDY#    64              Wait 500 msec.
+        WAIT    DEY     
+                BPL     WAIT
+                LDA#    00              Turn segments off.
+                STA     PCD
+                DEX
+                BPL     CHAR            Another char?
+                RTS
+```
 
 ### 0F25 Subroutine GETKEY
 
 Scan kybd; return ASCII in A,
 key in Y.
 
-A2 3F LDX# 3F Define I/O.
-8E O1 17 STX PADD
+```asm
+                LDX#    3F              Define I/O.
+                STX     PAD
+                STX     PAD
+        NXTKEY  DEC     PAD             Scan 2 keys.
+                LDA PAD                 for active key.
+                BMI     NXTKEY
+                AND#    3F              Mask input bit.
+                TAY                     Return if no key.
+                BNE     ANYKEY
+                RTS
 
-8E 00 17 STX PAD
+        ANYKEY  LDAY    KEYTAB          Get ASCII.
+                STX     PAD             Check shift key.
+                BIT     PAD
+                BPL     SHFTKY
+                RTS                     No shift; return.
+        SHFTKY  CMP#    21              shift legal?
+                BPL     NOT2LO
+                RTS
 
-CE 00 17 NXTKEY DEC PAD Scan 2 keys. _
-AD 00 17 LDA PAD for active key.
+        NOT2LO  CMP#    40
+                BMI     NOT2HI
+                RTS
 
-30 F8 BMI NXTKEY
-
-29 3F AND# 3F Mask input bit.
-
-A8 TAY Return if no key.
-
-DO O1 BNE ANYKEY
-
-60 ‘RTS
-
-B9 80 OE ANYKEY LDAY KEYTAB Get ASCII.
-
-8E 00 17 STX PAD Check shift key.
-
-2C 00 17 ' BIT PAD
-
-10 O1 BPL SHF TKY
-
-60 RTS No shift; return.
-
-C9 21 SHFTKY CMP# 21 shift legal?
-
-10 Ol BPL NOT2LO
-
-60 RTS
-
-c9 40 NOT2LO CMP# 40 ~
-30 OL BMI NOT2HI
-
-60 RTS
-
-49 10 NOT2HI EOR# 10 Find shift char. —
-60 RTS
-
-52
-56
+        NOT2HI  EOR#    10              Find shift char.
+                RTS
+```
 
 ### 0F54 Subroutine ADDCH
 
+Shift ASCII character in A into
 display from right.
 
-A2 00
-B4 24
-94 23
-E8
-
-EO 05
-30 F7
-E9 20
-AA
-
-BD CO OE
-85 28
-60
+```asmx
+                LDX#    00              Shift display
+        LEFT    LDYZX   DSPBFI          to left.
+                STYZX   DSPBUF
+                INX
+                CPX3    05
+                BMI     LEFT
+                SBC#    20              Find segment
+                TAX                     code.
+                LDAX    SEGTAB
+                STAZ    DSPBF5          Add at right.
+                RTS
+```
 
 ### 0F68 Subroutine GETCH
 
-Return ASCII in A.
-
-required.
-
-86 3B
-
-20 00 OF
-20 25 OF
-DO F8
-
-EA
-
-20 00 OF
-20 25 OF
-FO F8
-
-c9 08
-
-DO 10
-
-A2 04
-
-B4 23
-
-94 24
-CA
-
-10 F9
-
-AO 00
-
-84 23
-
-A6 3B
-
-60
-
-48
-
-20 54 OF
-A6 3B
-
-68
-
-60
-
-LDX#
-LEFT LDYZX
-STYZX
-INX
-CPxX3
-BMI
-SBC#
-TAX
-LDAX
-STAZ
-RTS
-
-X is preserved.
-
-00
-DSPBFI
-DSPBUF
-
-05
-LEFT
-20
-
-SEGTAB
-DSPBF5
-
-STXZ SAVX
-OLD JSR DSPLAY
-JSR GETKEY
-BNE OLD
-NOP
-NONE JSR DSPLAY
-JSR GETKEY
-BEQ NONE
-CMP# 08
-BNE NOTBSP
-LDX# 04
-RIGHT LDYZX DSPBUF
-STY ZX DSPBFI
-DEX
-BPL RIGHT
-LDY# 00
-STYZ DSPBUF
-LDXZ SAVX
-RTS
-NOTBSP PHA
-JSR ADDCH
-LDXZ SAVX
-PLA
-RTS
-
-53.
-
-Shift ASCII character in A into
-
-Shift display
-to left.
-
-Find segment
-code.
-
-Add at right.
-
 Get character from keyboard.
-Add to display or backspace as
+Return ASCII in A. Add to display or backspace as
+required.  X is preserved.
 
-Save X,
-Wait for release
-of old key.
+```asmx
+                STXZ    SAVX            Save X.
+        OLD     JSR     DSPLAY          Wait for release
+                JSR     GETKEY          of old key.
+                BNE     OLD
+                NOP
+        NONE    JSR     DSPLAY          Wait for new
+                JSR     GETKEY          key depressed.
+                BEQ     NONE
+                CMP#    08              Backspace?
+                BNE     NOTBSP
+                LDX#    04              Yes. Shift
+        RIGHT   LDYZX   DSPBUF          display right.
+                STYZX   DSPBFI
+                DEX
+                BPL     RIGHT
+                LDY#    00              Add blank
+                STYZ    DSPBUF          at left.
+                LDXZ    SAVX            Restore X.
+                RTS
 
-Wait for new
-key depressed.
-Backspace?
+        NOTBSP  PHA                     Else, add char
+                JSR     ADDCH           to display.
+                LDXZ    SAVX
+                PLA
+                RTS
+```
 
-Yes. Shift.
-display right.
+### 0F97 Subroutine OUTCH
 
-Add blank
-at left.
-Restore X.
-
-Else, add char
-to display.
-
-57
-OF 97
-play.
-
-86
-20
-AQ
-85
-20
-C6
-10
-A6
-60
-
-3B
-54
-40
-5C
-00
-5C
-F9
-3B
-
-OFAA
-
-AQ
-20
-60
-
-20
-97
-
-OFBO
-
-A9
-A2
-95
-
-CA
-
-10
-60
-
-00
-05
-23
-
-FB
-
-### Subroutine OUTCH
-
+Add ASCII character in A to display.
 Display for about 0.2 sec. Preserve X.
 
-STXZ
-OF JSR
-LDA#
-STAZ
-OF SHOW JSR
-DECZ
-BPL
-LDXZ
-RTS
+```asmx
+                STXZ    SAVX            Save X.
+                JSR     ADDCH           Add char.
+                LDA#    40              Wait 0.2 sec
+                STAZ    TIME            before returning.
+        SHOW    JSR     DSPLAY
+                DECZ    TIME
+                BPL     SHOW
+                LDXZ    SAVX            Restore X
+                RTS
+```
 
-### ?? Subroutine OUTSP
-
-LDA#
-
-OF JSR
-RTS
-
-### ?? Subroutine CRLF
-
-LDA#
-LDX#
-
-Add ASCII character in A to dis-
-
-SAVX Save X.
-ADDCH Add char. ~
-40 Wait 0.2 sec
-TIME before returning.
-DSPLAY -
-TIME
-SHOW
-SAVX ; Restore X.
+### 0FAA Subroutine OUTSP
 
 Output one space.
 
-20
-OUTCH
+```asmx
+                LDA#    20
+                JSR     OUTCH
+                RTS
+```
+
+### 0FB0 Subroutine CRLF
 
 Clear display.
 
-00
-05
+```asmx
+                LDA#    00
+                LDX#    05
+        CLEAR   STAZX   DSPBUF
+                DEX
+                BPL     CLEAR
+                RTS
+```
 
-CLEAR STAZX DSPBUF
+## APPENDIX B: ANSWERS TO USER QUESTIONS
 
-DEX
-BPL
-RTS
-
-CLEAR
-
-54
-58
-APPENDIX B: ANSWERS TO USER QUESTIONS
 Q. Can the assembler be stored in read only memory?
 
 A. Yes; it will just fit in a 2K ROM. Presumably it will have
 to be relocated, following the instructions in Section 5.4. In
 addition, the assembler must be entered at the relocated equivalent
-of O9AA. This routine, which is unused in the RAM version
+of `09AA`. This routine, which is unused in the RAM version
 of the assembler, transfers the first nine entries in the symbol
 table from ROM to RAM. These symbols correspond to commands and
 are essential to the assembler. The correct source and destination
@@ -2812,9 +2565,9 @@ Q. If I have enough memory, can I expand the symbol table?
 A. Yes. The standard version of the assembler allows 64 symbols,
 including nine for assembler commands. Space is available for
 nine additional symbols if overflow error detection is defeated
-by setting 05B4 (23B4) = EA. The assembler can also be modified
+by setting `05B4` (`23B4`) = `EA`. The assembler can also be modified
 to give an overflow error message when the number of symbols
-exceeds 128, by setting 05BO (23BO0) = 10. Expanding the symbol
+exceeds 128, by setting `05B0` (`23B0`) = `10`. Expanding the symbol
 table to 128 entries requires moving the module and assembled
 program storage areas. See Section 5.2. Actually, quite lengthy
 programs can be assembled within the limit of 55 user symbols,
@@ -2824,631 +2577,117 @@ Q. My video terminal only has 32 characters per line, so your
 print routine runs over by one character. Any advice?
 
 A. Make the following changes at the addresses indicated:
-0870(2670)=14, 0880(2680)=14, 989C( 269C )=1B O8AD(26AD)=20,
-O8ED=1E, Input lines may still exceed 32 characters,
+`0870` (`2670`) = `14`, `0880` (`2680`) = `14`, `989C`(`269C`) = `1B`,
+`08AD` (`26AD`) = `20`, `08ED` = `1E`. Input lines may still exceed 32 characters,
 
 Q. Can the assembler be used with the SYM microcomputer?
 
 A. Easily. The I/O routine addresses must be changed as
-explained in Section 5.5. The SYM monitor addresses are 834D
-(CRLF), 8A47(OUTCH), 8A1B(GETCH), and 8342(OUTSP).
+explained in Section 5.5. The SYM monitor addresses are `834D` (`CRLF`), `8A47` (`OUTCH`), `8A1B` (`GETCH`), and `8342` (`OUTSP`).
 
 Q. How about a command to give the starting address of the
-module without having to check 0040, 0041?
+module without having to check `0040`, `0041`?
 
 A. This is just one example of a number of commands that could
 easily be implemented by users who don't insist on fitting the
 assembler in a 2K ROM. It is also possible to add features by
 sacrificing existing commands. For example, some users may
-rarely use ?REDEF. Others may use ?ASSGN and ?REDEF to name
+rarely use `?REDEF`. Others may use `?ASSGN` and `?REDEF` to name
 and reserve space for tables. Either command could be replaced
 by a user-written command. Reviewers disagreed on some of the
 most desired features in a 2K assembler. The assembler is
 sufficiently easy to modify that the final choice can be left
 to the user.
 
-55
 
-59
-A541 ~-TEST
-AZB2
-
-26FFa&3
-
-A54&
-
-AZBA
-
-26FFQ3
-28A168
-
-A21A -
-
-BS3C SAVE
-SDE-@@B
-
-CA
-
-i@FS
-
-4CGG1C
-
-A2ZLA ENTER
-BDEQOB RESTR
-953C
-
-cA
-
-16F8
-
-4CD6a5
-
-LDAZ
-LDX#
-JSR
-LDAZ
-LDX#
-JSR
-JSR
-LDX#
-LDAZX
-STAX
-DEX
-BPL
-JMP
-LDX#
-LDAX
-STAZXK
-DEX
-BPL
-JMP
-
-MDBLADH
-B2
-DSPHEX
-MBLADL
-a4
-DSPHEX
-OUTLIN
-iA
-GLOBAL
-COPY
-
-SAVE
-MONITR
-1A
-COPY
-GLOBAL
-
-RESTR
-WARM
-
-56
-
-6a
-82
-04
-
-~
-
-8S
-
-GE
-Li
-13
-1S
-18
-13
-1B
-LE
-28
-23
-25
-26
-23
-
-60
-2K SYMBOLIC ASSEMBLER: REVISIONS
+## 2K SYMBOLIC ASSEMBLER: REVISIONS
 
 Here are the corrections for ail bugs found so far, along with some
 optional modifications to the 2KSA.
 
-BACKSPACE BUG
+### BACKSPACE BUG
 
 The “backspace” key does not delete the last character, but only moves a
-
 pointer to allow typing over it. It is not possible to blenk out a
 character using the “space” key, because that is used to advance it to the
 next field. One solution is to use “tab” to advance to the next field,
-
 freeing “space" for use as a blanking character. (Thanks to Nelson Edwards
 for finding this bug.)
 
-ADDRESS ASSIGNMENT PROBLEMS.
+### ADDRESS ASSIGNMENT PROBLEMS.
 
 The 2KSA is designed to prevent accidental re-assignment of an address
 to a symbol. Early versions were a bit overzealous in this area, and
-should be fixed by loading at @478: 34, @4, C9, FF. The re-assignment
-check can also be defeated completely, if desired, by loading at 847A: AS,
-@8. Just don’t forget and use the same symbol twice.
+should be fixed by loading at `0478: 34, 04, C9, FF`. The re-assignment
+check can also be defeated completely, if desired, by loading at `047A: A9, 08`. 
+Just don’t forget and use the same symbol twice.
 
-EASIER RELOCATION
+### EASIER RELOCATION
 
-Relocation of madules in edit mode is possible if ?REDEF is changed to ,
--REDEF. Set @9SD@=2D and @681=2D.
+Relocation of madules in edit mode is possible if `?REDEF` is changed to ,
+`-REDEF`. Set `09D0=2D` and `0681=2D`.
 
-EASIER TESTING
+### EASIER TESTING
 
-The command --TEST (facing page) can be used to print the start address
+The command `--TEST` (below) can be used to print the start address
 of the module and leave the assembler for testing. The extra hyphen is
-required because the 1/0 buffer isn’t cleared. --TEST also automatically
+required because the I/O buffer isn’t cleared. `--TEST` also automatically
 saves the pointers required for source code storage starting at addrass
-@BEH. Source code can then be saved by simply dumping @ABB-aCEa.
+`0BE0`. Source code can then be saved by simply dumping `0A00-0C80`.
 
-The listing also contains a re-entry routine (starting at ENTER) which
+The listing also contains a re-entry routine (starting at `ENTER`) which
 restores the pointers before entering edit mode. This would ordinarily be
 used after loading source code from tape.
 
-To substitute --TEST for ?TABLE, toad it at @71F and load at QSE@: 2D,
-2D, S54, 45, 53, S4. MONITR should be the warm start address for the
+To substitute `--TEST` for `?TABLE`, load it at `071F` and load at 
+`09E0: 2D, 2D, 54, 45, 53, 54`. `MONITR` should be the warm start address for the
 monitor of your particular computer.
 
-57
-61
-| ,
+```asmx
+        --TEST  LDAZ    MDLADH
+                LDX#    02
+                JSR     DSPHEX
+                LDAZ    MDLADL
+                LDX#    04
+                JSR     DSPHEX
+                JSR     OUTLIN
+                LDX#    1A
+        SAVE    LDAZX   GLOBAL
+                STAX    COPY
+                DEX
+                BPL     SAVE
+                JMP     MONITR
+        ENTER   LDX#    1A
+        RESTR   LDAX    COPY
+                STAZX   GLOBAL
+                DEX
+                BPL     RESTR
+                JMP     WARM
+```
 
-SOURCE CODE TAPE RECORD FORM
+### SOURCE CODE TAPE RECORD FORM
 
 To save:
 
-Record pointer values below.
-Dump OAOO through OC7F.
+- Record pointer values below.
+- Dump 0A00 through 0C7F.
 
 To retrieve:
 
-Initialize assembler.
+- Initialize assembler.
+- Hit reset.
+- Load module from tape.
+- Restore pointers.
+- Enter assembler from 05D6.
+- Ignore any error code.
 
-Hit reset.
-
-Load module from tape.
-Restore pointers.
-
-Enter assembler from 05D6.
-Ignore any error code.
+TODO 
 
 GLOBAL PRGLEN SYMTBL SYMNUM
 Module Name ‘ ID  003¢ 003D 0050,51 0056
 
 Permission is hereby granted to photocopy this page.
 
-58
-62
-2K SYMBOLIC ASSEMBLER VERSION 1.
+TODO  - running two-digit checksum ok to 0750 when IO vectors differ
 
-Begin session with G SBS.
-
-00
-210
-0220
-0230
-0240
-0250
-0260
-0270
-0280
-0290
-02A0
-02680
-o2c0
-02D0
-02E0
-02F0
-
-02
-
-as
-
-06
-
-Block
-
-a?
-4c
-
-08
-a4
-
-0
-
-checksum:
-
-OF
-
-0A
-4C
-
-08
-49
-
-~ SYM USERS’
-
-0405
-
-oc
-43
-4F
-
-OD
-4c
-
-GROUP
-
-OF
-
-44,85
-48,68
-53,42
-54,09
-54,20
-
-- 43,FD
-
-53,9C
-4F 48
-52,15
-42,7C
-20,3C
-20,55
-19,54
-11,5C
-00,33
-05,74
-
-OF
-48,AC
-4A ,A8
-E4,3F
-26,71
-56,83
-31,71
-SE ,51
-6E,E3
-1E,78
-
-F9,DS.
-
-00,26
-88,68
-Cé,B9
-OF ,56
-2D, 9A
-48,20
-
-OF
-38,92
-26,3C
-E5,12
-2B,56
-50 ,BE
-50,82
-
-03,c2
-
-20 ,E6
-03,11
-A2,82
-30,15
-FF,BA
-ES ,A4
-A2,31
-34,00
-FO,41
-
-BRKCLCCLDCLICLVD
-
-EXDEY INXINYNGPPH
-APHPPLAPLPRTIRTS
-SECSEDSEITAXTAYT
-SXTXATXST YACPXST
-XLDXCPYLDYSTYADC
-ANDCMPEORLDAORAS
-BCSTAASLLSRROLRO
-RDECINCBITJMPJSR
-BCCBCSBEQEMI BNEB
-PLBVCBVS A # 2
-ZXZYIXIY x ¥
-I ? 0 s
-t&.- %°80-’/ er
-"S2:1Pcun vA
-7a x
-
-XX8BJ hHJH
-ht a Oxx*c: J
-¥j*"O iITI) id
-&D$ eXZEEZX e F&
-fFFS4 uUSUUS u VY
-6VVU6 alAA!' a ql
-QQ1 q OpoOP Ppl
--L, m-MM- m N.n
-Nn,L <¢3=)]]= 3}
-“Ot > ¥PYYS ¥
-TO" # 19 0
-x&6$510Q2p
-UHP ‘8A%0e4 00 F
-1J a‘5 100 Bi >
-* uU ~h Uo -
-**I 0 j iQ “H
-
-JJJJ ro hh>d rer *8
-““Ve- +), &
-+&, y»y8A%Pet+ +%Qe
-> 3° 1+ dDH1+
-** 3) # KPI P
-“fQ #39 P 13 P
-y&Vh VS R"P #
-
-p “RC dV*"B
-#p 1s ."1 # p
-2°24. 1 “Too "
-J%.1B 33°10 0
->3* IN 7H I
-P 3S jA7I1 3-\ Ff
-“1% ti a S>-*4
-
-RIla "P # p 94
-“4p 95* 8% I p
-63
-o500
-0510
-0520
-0530
-
-~ JOO
-
-0560
-0570
-o580
-Q590
-O5A0
-O5B0
-o5co
-05D0
-OSE0
-OSFO
-
-0700
-0710
-0720
-0730
-
-OF
-Ag, FS
-03,8E
-3F ,A4
-20 ,D7
-
-18,75.
-
-00,23
-48,1D
-00,1E
-04,4F
-2F,4C
-56,37
-3F 1A
-FB,46
-A2,7E
-A5,BA
-2D,C0
-
-OF
-EA, 7A
-3E,25
-07,93
-
-44,B4
-
-03,68
-07,A5
-A? ,37
-40 ,AD
-10,E8
-20 ,E3
-E0,DA
-3E,B1
-34,87
-86,64
-2D,9D
-85,48
-
-OF
-
-Eé,17
-A5,D1
-A?,B5
-20,DA
-OC,FA
-83,40
-06,D7
-C9,D3
-83,D3
-E8,B2
-
-85,44
-
-2B ,83
-20,93
-AP,0C
-DO ,SB
-10,F7
-
-C B84%7Ti dK
-27*“)-*‘jidsO 4 EP
-POS“”~ " Ip"
-
-a PFSI-K“ALE p
-
-i “> R*P #p X%
-
-I?) >0*)A*> HUH
-41) * @ $/ 9?
-> KA Ip 3 i
-AP + Ad + “rer
-
-> “F=e/ = )B*Sy
-
-P >C*)-*X" =] 2
-
-J xd? “tog ¢
-"91? “P" “>"
-"“— 3) STK
-
-+ I-
-
-:I-P “%~ I P
-
-Pw" p I 6J
-> i poDb* 4) >
-
-=  +%?7H +)-°%
-
-IP >?%>) i p oD
-
-wn a +" a
->" JO]
-
-“” bLjJ .« IDP ):%3
-+ a A" a a
->?* L>#= We
-SH1>*% Ws .%
-4%) &.*a W**
-i 8i 8e> Ws Hq>
-WHA#i Wath 4
-IP i+ x
-+ ' &+dVOc* K >-
-Ep *> >4a WHA
-
-x -S%Wle- Wo Ff
-XBA>e- SE=0e)-*%
-I P )?*) ip?
-DS Aad +H“A +"
-a ead a fA) "
-J¢c¢jyn“ E] M
-"35 Gh* Ov" >
-- IP IP *%I
-P Jf-> IP Jj B
-hF- x> -~I OQ h
-F- Mj&< VAt
-PA, Q “A + “DO +
-e= @ fA ?* *
-POY ai > shy
-J €&V¥ 4 Z>EDP
-A?PEXP t+
-64
-0800
-0810
-0820
-30
-©:
-350
-0860
-0870
-osso
-oso
-osaAo
-08Bo
-osco
-osDo
-OSEO
-O8Fo
-
-‘®@
-
-OF
-FF,DS
-
-> O7,7¢
-
-02,DA
-85,Dé6
-OF ,07
-01,46
-A2,8C
-99,09
-02,54
-03,78
-Fé,21
-20,30
-
-20,17
-
-39 ,B9
-FF ,C9
-E6,65
-
-OF
-85,93
-1A,1C
-07,7F
-60,67
-65,FC
-91,D1
-02,1A
-FO,C9
-38,38
-91,99
-9D ,DB
-06,65
-06,22
-06,D6
-07,0A
-09,05
-
-x" Ide *  1W"
-i> 7" | "OL
-O os" J th: aC
-=) 1>S823N
-- e-k= =
-= “71 £7
-iw" “wele® 15>"
-‘1>% i+
-xACTi S FZ
-iW" i>p 8
-~M" 5S G h*#Oyv
-‘2 dAd WAA X"
-a Y¥" a 2)
-
-Y ADSEYP FSREZP FS?
-EYO EZ #80 "
-1 ji AWes WF
-
-xX “Aref YE=0C*)
-8 1 y-*&V 4 EPP
-
-“ESO $2902 3”
-+ e/ +jJd< Z*
-A>E=P * 2 “Are
-
-/ LK? #i=BedC1>
-» y*) 6 1 EZP
-FOL9p YKSKY Y&Zp
-
-&BeZ /
-e> -“4=
->HD-OwJ
-8 J wls
-?BEGIN
-?PREDEFr
-?TABLE
--PRINT
-
-“~? [A=S
-ef = 12
-»-* "G=8
-
-?ASSGN.
--LOCALe
--ASSEMK
--STORE&
--INSRTe
-
+(hex dump and checksum omitted; try `hexdump -C -s 512 -n 2048 2ksa.bin`)

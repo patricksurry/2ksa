@@ -8,7 +8,7 @@ byte_re = '[0-9A-F]{2}'
 
 def fixsym(s: str) -> str:
     """Translate non-alpha prefix to get a legal symbol"""
-    return ({'-': 'X', '?': 'Q'}).get(s[0], s[0]) + s[1:]
+    return ({'-': 'EDIT_', '?': 'CONTROL_'}).get(s[0], s[0]) + s[1:]
 
 
 def convert_module(s: str, globals: set) -> str:
